@@ -242,7 +242,7 @@ let birthdaySong = null;
 // Initialize birthday song
 function initBirthdaySong() {
     birthdaySong = new Audio('birthday.mp3');
-    birthdaySong.volume = 0.5;
+    birthdaySong.volume = 0.07;
 }
 
 // Blow candles function
@@ -1156,7 +1156,8 @@ devSkipSelect.addEventListener('change', function () {
     document.getElementById(target).style.display = 'flex';
     if (target === 'storyGalleryPage') { storyIndex = 0; renderStorySlide(); }
     if (target === 'quizPage') { currentQuestionIndex = 0; quizAnswers = []; renderQuizQuestion(); }
-    if (target === 'listPage') { listCategoryIndex = 0; listItemIndex = 0; renderListItem(); }
+  if (target === 'listPage') { listCategoryIndex = 0; listItemIndex = 0; renderListItem(); }
+if (target === 'memoryGalleryPage') { memCategoryIndex = 0; memImageIndex = 0; renderMemImage(); }
   }
 
   this.value = "";
@@ -1271,7 +1272,7 @@ const bgPlaylist = [
 let currentSongIndex = 0;
 
 const bgMusic = document.getElementById('bgMusic');
-bgMusic.volume = 0.2;
+bgMusic.volume = 0.06;
 console.log('Volume set to:', bgMusic.volume);
 const musicToggleBtn = document.getElementById('musicToggleBtn');
 let musicStarted = false;
