@@ -1215,12 +1215,13 @@ function renderMemImage() {
   memGalleryFrame.classList.remove('slide-anim');
   void memGalleryFrame.offsetWidth;
   memGalleryFrame.classList.add('slide-anim');
-const cat = memoryGalleries[memCategoryIndex];
+
   if (memImageIndex < cat.images.length - 1) {
     preloadImage(cat.images[memImageIndex + 1]);
   } else if (memCategoryIndex < memoryGalleries.length - 1) {
     preloadImage(memoryGalleries[memCategoryIndex + 1].images[0]);
   }
+}
 
 function memNext() {
   const cat = memoryGalleries[memCategoryIndex];
