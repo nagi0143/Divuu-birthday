@@ -447,17 +447,15 @@ function renderStorySlide() {
   galleryBackBtn.disabled = storyIndex === 0;
   galleryNextBtn.textContent = storyIndex === storyItems.length - 1 ? 'Yehi Tak ✨' : 'Aage →';
 
-  galleryFrame.classList.remove('slide-anim');
-  void galleryFrame.offsetWidth;
   galleryFrame.classList.add('slide-anim');
 
-if (storyIndex < storyItems.length - 1) {
+  if (storyIndex < storyItems.length - 1) {
     const nextItem = storyItems[storyIndex + 1];
     if (nextItem.type === 'photo') preloadImage(nextItem.src);
+  }
 }
-  
 
-galleryBackBtn.addEventListener('click', () => {
+galleryBackBtn.addEventListener('click', () => { 
   if (storyIndex > 0) { storyIndex--; renderStorySlide(); }
 });
 const quizIntroPage = document.getElementById('quizIntroPage');
