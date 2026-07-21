@@ -2,6 +2,10 @@
 // DIVUU'S 20TH BIRTHDAY
 // PART 1 - STARS
 // ==========================================
+function preloadImage(src) {
+  const img = new Image();
+  img.src = src;
+}
 
 const starsLayer = document.getElementById("stars");
 
@@ -446,7 +450,12 @@ function renderStorySlide() {
   galleryFrame.classList.remove('slide-anim');
   void galleryFrame.offsetWidth;
   galleryFrame.classList.add('slide-anim');
+
+if (storyIndex < storyItems.length - 1) {
+    const nextItem = storyItems[storyIndex + 1];
+    if (nextItem.type === 'photo') preloadImage(nextItem.src);
 }
+  
 
 galleryBackBtn.addEventListener('click', () => {
   if (storyIndex > 0) { storyIndex--; renderStorySlide(); }
@@ -1206,7 +1215,12 @@ function renderMemImage() {
   memGalleryFrame.classList.remove('slide-anim');
   void memGalleryFrame.offsetWidth;
   memGalleryFrame.classList.add('slide-anim');
-}
+const cat = memoryGalleries[memCategoryIndex];
+  if (memImageIndex < cat.images.length - 1) {
+    preloadImage(cat.images[memImageIndex + 1]);
+  } else if (memCategoryIndex < memoryGalleries.length - 1) {
+    preloadImage(memoryGalleries[memCategoryIndex + 1].images[0]);
+  }
 
 function memNext() {
   const cat = memoryGalleries[memCategoryIndex];
