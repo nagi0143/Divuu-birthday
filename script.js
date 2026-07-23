@@ -1165,6 +1165,7 @@ devSkipSelect.addEventListener('change', function () {
     if (target === 'quizPage') { currentQuestionIndex = 0; quizAnswers = []; renderQuizQuestion(); }
   if (target === 'listPage') { listCategoryIndex = 0; listItemIndex = 0; renderListItem(); }
 if (target === 'memoryGalleryPage') { memCategoryIndex = 0; memImageIndex = 0; renderMemImage(); }
+if (target === 'togetherPage') { updateTogetherCounter(); }
   }
 
   this.value = "";
@@ -1229,7 +1230,8 @@ function memNext() {
     memCategoryIndex++;
     memImageIndex = 0;
   } else {
-    console.log('Saari galleries khatam — agla part baad mein aayega 🍀');
+    memoryGalleryPage.style.display = 'none';
+    document.getElementById('togetherPage').style.display = 'flex';
     return;
   }
   renderMemImage();
@@ -1310,5 +1312,236 @@ function startBgMusic() {
 musicToggleBtn.addEventListener('click', () => {
   bgMusic.muted = !bgMusic.muted;
   musicToggleBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
+});
+
+// ==========================================
+// TOGETHER SINCE COUNTER
+// ==========================================
+const togetherSinceDate = new Date("2024-09-03T00:00:00"); // ⚠️ APNI ASLI DATE YAHAN DAALO
+
+function updateTogetherCounter() {
+  const now = new Date();
+  let years = now.getFullYear() - togetherSinceDate.getFullYear();
+  let months = now.getMonth() - togetherSinceDate.getMonth();
+  let days = now.getDate() - togetherSinceDate.getDate();
+  let hours = now.getHours() - togetherSinceDate.getHours();
+  let minutes = now.getMinutes() - togetherSinceDate.getMinutes();
+  let seconds = now.getSeconds() - togetherSinceDate.getSeconds();
+
+  if (seconds < 0) { seconds += 60; minutes--; }
+  if (minutes < 0) { minutes += 60; hours--; }
+  if (hours < 0) { hours += 24; days--; }
+  if (days < 0) {
+    const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+    days += prevMonth.getDate();
+    months--;
+  }
+  if (months < 0) { months += 12; years--; }
+
+  const weeks = Math.floor(days / 7);
+  const remDays = days % 7;
+
+  document.getElementById('togetherCounter').innerHTML =
+    `${years} saal ${months} mahine ${weeks} hafte ${remDays} din<br>${hours} ghante ${minutes} minute ${seconds} second`;
+}
+setInterval(updateTogetherCounter, 1000);
+updateTogetherCounter();
+
+
+// ==========================================
+// FINAL PAGE - I LOVE YOU + REAL CELEBRATION
+// ==========================================
+document.getElementById('finalSubmitBtn').addEventListener('click', async () => {
+  const reply = document.getElementById('finalReplyBox').value.trim();
+  if (!reply) return;
+
+  try {
+    await fetch(`https://api.telegram.org/bot8890809901:AAEja8I5j0aBUWUwDGLdRN2uLuSHoK-yvXc/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: '8596970646', text: `💌 Divuu ne likha:\n\n${reply}` })
+    });
+  } catch (e) { console.log('Reply bhejne mein dikkat:', e); }
+
+  document.getElementById('finalWrap').style.display = 'none';
+  document.getElementById('celebrationOverlay').style.display = 'flex';
+  startFinalCelebration();
+});
+
+const celebrationLines = [
+  "Happy Birthday Meri Jaan 🍀",
+  "Aaj se tum ek saal aur khoobsurat ho gayi ho 😏",
+  "Meri sabse pyaari, sabse shararati princess 💫",
+  "I Love You Divuu, hamesha aur hamesha ♾️"
+];
+
+const bannerColors = ['#f3d98c','#e6a4c4','#a78bfa','#7bdff2','#ffb3c6'];
+
+function createBirthdayBannerRow(word, container, rowIndex) {
+  const letters = [...word];
+  const n = letters.length;
+  const spacing = 38;
+  const rowWidth = n * spacing;
+  const sag = 22;
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', `0 0 ${rowWidth} 66`);
+  svg.classList.add('banner-row-svg');
+  svg.style.width = rowWidth + 'px';
+
+  const stringPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  stringPath.setAttribute('d', `M0,6 Q${rowWidth/2},${6+sag*2} ${rowWidth},6`);
+  stringPath.setAttribute('stroke', '#d4af37');
+  stringPath.setAttribute('stroke-width', '2');
+  stringPath.setAttribute('fill', 'none');
+  svg.appendChild(stringPath);
+
+  letters.forEach((ch, i) => {
+    const t = n === 1 ? 0.5 : i / (n - 1);
+    const x = i * spacing + spacing / 2;
+    const y = 6 + sag * Math.sin(Math.PI * t);
+
+    const outerG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    outerG.setAttribute('transform', `translate(${x},${y})`);
+
+    const innerG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    innerG.classList.add('banner-flag-anim');
+    innerG.style.animationDelay = (rowIndex * 0.5 + i * 0.08) + 's';
+
+    const color = bannerColors[(rowIndex * 10 + i) % bannerColors.length];
+    innerG.innerHTML = `
+      <polygon points="-14,0 14,0 14,24 0,38 -14,24" fill="${color}" stroke="#0f0c29" stroke-width="1"/>
+      <text x="0" y="18" text-anchor="middle" font-size="18" font-family="Cinzel, serif" fill="#0f0c29" font-weight="700">${ch}</text>
+    `;
+
+    outerG.appendChild(innerG);
+    svg.appendChild(outerG);
+  });
+
+  container.appendChild(svg);
+}
+
+function createBirthdayBanner() {
+  const wrap = document.getElementById('bdayBanner');
+  wrap.innerHTML = '';
+  createBirthdayBannerRow("HAPPY", wrap, 0);
+  createBirthdayBannerRow("BIRTHDAY", wrap, 1);
+} 
+
+
+function launchRocket() {
+  const container = document.getElementById('finalFireworksBox');
+  const colors = ['#FFD700', '#FF69B4', '#00CED1', '#FF6347', '#7B68EE', '#32CD32', '#FF1493'];
+  const rocket = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  rocket.setAttribute('viewBox', '0 0 20 40');
+  rocket.classList.add('firework-rocket');
+  const startX = 10 + Math.random() * 80;
+  const endY = 30 + Math.random() * 40;
+  rocket.style.left = startX + 'vw';
+  rocket.style.setProperty('--endY', endY + 'vh');
+  rocket.innerHTML = `
+    <polygon points="10,0 16,28 10,22 4,28" fill="#FFD700"/>
+    <line x1="10" y1="20" x2="10" y2="40" stroke="#FFA500" stroke-width="3"/>
+  `;
+  container.appendChild(rocket);
+
+  setTimeout(() => {
+    createCakeFirework(container, colors);
+    rocket.remove();
+  }, 900);
+}
+
+function dropGift() {
+  const container = document.getElementById('finalFireworksBox');
+  const giftColors = ['#e6a4c4', '#7bdff2', '#a78bfa', '#f3d98c'];
+  const gift = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  gift.setAttribute('viewBox', '0 0 40 40');
+  gift.classList.add('falling-gift');
+  gift.style.left = Math.random() * 90 + 'vw';
+  gift.style.animationDuration = (3 + Math.random() * 2) + 's';
+  const color = giftColors[Math.floor(Math.random() * giftColors.length)];
+  gift.innerHTML = `
+    <rect x="4" y="14" width="32" height="22" fill="${color}" stroke="#0f0c29" stroke-width="1.5"/>
+    <rect x="4" y="17" width="32" height="6" fill="#FFD700"/>
+    <rect x="17" y="6" width="6" height="30" fill="#FFD700"/>
+    <circle cx="20" cy="8" r="5" fill="none" stroke="#FFD700" stroke-width="2"/>
+  `;
+  container.appendChild(gift);
+  setTimeout(() => gift.remove(), 5000);
+}
+
+function startFinalCelebration() {
+  createBirthdayBanner();
+
+  let rocketCount = 0;
+  const rocketInterval = setInterval(() => {
+    launchRocket();
+    rocketCount++;
+    if (rocketCount > 25) clearInterval(rocketInterval);
+  }, 700);
+
+  let giftCount = 0;
+  const giftInterval = setInterval(() => {
+    dropGift();
+    giftCount++;
+    if (giftCount > 15) clearInterval(giftInterval);
+  }, 900);
+
+  const textEl = document.getElementById('celebrationText');
+  let lineIndex = 0;
+  function showNextLine() {
+    textEl.style.opacity = 0;
+    setTimeout(() => {
+      textEl.textContent = celebrationLines[lineIndex];
+      textEl.style.opacity = 1;
+      lineIndex = (lineIndex + 1) % celebrationLines.length;
+    }, 400);
+  }
+  showNextLine();
+  setInterval(showNextLine, 3200);
+  setTimeout(() => {
+  document.getElementById('celebrationNextBtn').style.display = 'inline-flex';
+}, 4000);
+}
+
+
+document.getElementById('togetherNextBtn').addEventListener('click', () => {
+  document.getElementById('togetherPage').style.display = 'none';
+  document.getElementById('finalPage').style.display = 'flex';
+});
+
+// ==========================================
+// SPOTIFY PLAYLISTS SURPRISE PAGE
+// ==========================================
+const spotifyPlaylists = [
+  { name: "20 Hindi Songs — My Wife 👰🏻💋", url: "https://open.spotify.com/playlist/1DMppqTmSVE0JPjdQe1Q6P?si=hwEXZ0lWS1WDztmQ9E-8LA&utm_source=copy-link&pi=64MQd125SpCiw" },
+  { name: "20 Punjabi Songs — My Queen 👑💋", url: "https://open.spotify.com/playlist/59gYsVBfj1vDYNGw8xsUTg?si=GMMeflEnS8qEH0LoIxQl4g&utm_source=copy-link" },
+  { name: "20 English Songs — My Bachaa 💋🌷", url: "https://open.spotify.com/playlist/7EBdLSdbNpN4WVnxBoKJxZ?si=Tlj7v6RnTwyQkTUBFtI-gQ&utm_source=copy-link" }
+];
+
+function renderSpotifyCards() {
+  const container = document.getElementById('spotifyCards');
+  spotifyPlaylists.forEach(pl => {
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(pl.url)}`;
+    const card = document.createElement('a');
+    card.href = pl.url;
+    card.target = '_blank';
+    card.rel = 'noopener';
+    card.className = 'spotify-card';
+    card.innerHTML = `
+      <img src="${qrUrl}" alt="QR code">
+      <div>
+        <div class="spotify-card-title">${pl.name}</div>
+        <div class="spotify-card-sub">Tap karo ya QR scan karo →</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+renderSpotifyCards();
+
+document.getElementById('celebrationNextBtn').addEventListener('click', () => {
+  document.getElementById('celebrationOverlay').style.display = 'none';
+  document.getElementById('spotifyPage').style.display = 'flex';
 });
 

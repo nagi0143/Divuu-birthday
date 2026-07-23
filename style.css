@@ -2126,3 +2126,77 @@ box-shadow:
   display:none; align-items:center; justify-content:center;
 }
 
+.celebration-overlay{
+  position:fixed; inset:0; z-index:9998;
+  display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(ellipse at center, #24243e 0%, #0f0c29 100%);
+  overflow:hidden;
+}
+.celebration-text{
+  position:relative; z-index:2;
+  font-family:'Great Vibes',cursive;
+  font-size:42px; color:#fdf6ec; text-align:center; padding:0 30px;
+  text-shadow:0 0 30px rgba(230,164,196,.6);
+  transition:opacity .4s ease;
+}
+
+/* ============================================== */
+/* HANGING BANNER (curved, 2 rows) */
+/* ============================================== */
+.banner-wrap{
+  position:fixed; top:0; left:0; right:0; z-index:10000;
+  display:flex; flex-direction:column; align-items:center;
+  gap:2px; padding-top:10px; pointer-events:none;
+}
+.banner-row-svg{ height:66px; overflow:visible; }
+.banner-flag-anim{
+  opacity:0;
+  transform-origin: 0px 0px;
+  animation: bannerDrop .6s cubic-bezier(.34,1.56,.64,1) forwards, bannerSwing 2.4s ease-in-out infinite 1s;
+}
+@keyframes bannerDrop{
+  from{ transform: translateY(-40px) rotate(-15deg); opacity:0; }
+  to{ transform: translateY(0) rotate(0deg); opacity:1; }
+}
+@keyframes bannerSwing{
+  0%,100%{ transform: rotate(-4deg); }
+  50%{ transform: rotate(4deg); }
+}
+
+
+/* ============================================== */
+/* ROCKETS */
+/* ============================================== */
+.firework-rocket{
+  position:absolute; bottom:-40px; width:16px; height:40px;
+  animation: rocketLaunch .9s ease-out forwards;
+  filter: drop-shadow(0 0 6px gold);
+}
+@keyframes rocketLaunch{
+  from{ bottom:-40px; opacity:1; }
+  to{ bottom: var(--endY); opacity:1; }
+}
+
+/* ============================================== */
+/* FALLING GIFTS */
+/* ============================================== */
+.falling-gift{
+  position:absolute; top:-40px; width:30px; height:30px;
+  animation: giftFall linear forwards;
+}
+@keyframes giftFall{
+  from{ top:-40px; transform:rotate(0deg); }
+  to{ top:110vh; transform:rotate(360deg); }
+}
+
+.spotify-card{
+  display:flex; align-items:center; gap:14px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(212,175,55,.3);
+  border-radius:14px; padding:12px 14px; margin-bottom:14px;
+  text-decoration:none; text-align:left;
+}
+.spotify-card img{ width:64px; height:64px; border-radius:8px; background:#fff; padding:4px; }
+.spotify-card-title{ font-family:'Cinzel',serif; font-size:14px; color:#f0e9f9; }
+.spotify-card-sub{ font-family:'Cormorant Garamond',serif; font-size:13px; color:#b9a7d9; margin-top:4px; }
+

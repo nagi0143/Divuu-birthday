@@ -492,7 +492,8 @@ Continue Our Fairytale ✨
     <option value="listPage">8. 20-Lists</option>
     <option value="galleryIntroPage">9. Memory Gallery Intro</option>
 <option value="memoryGalleryPage">10. Memory Gallery</option>
-    
+    <option value="togetherPage">11. Together Since</option>
+<option value="finalPage">12. Final Page</option>
   </select>
 </div>
 
@@ -549,6 +550,64 @@ Continue Our Fairytale ✨
   <!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" src="" preload="auto"></audio>
 <button id="musicToggleBtn" style="display:none;">🔊</button>
+
+  <div class="page" id="togetherPage" style="display:none;">
+  <div class="story-intro-wrap">
+    <div class="story-intro-card">
+      <div class="story-seal">🍀</div>
+      <span class="story-eyebrow">Hum Saath Hain</span>
+      <h1 class="story-title" style="font-size:38px;">Together Since</h1>
+      <div class="story-rule"><span></span>✦<span></span></div>
+      <div id="togetherCounter" style="font-family:'Cinzel',serif; font-size:19px; color:#f3e9d8; line-height:1.9;"></div>
+      <p class="story-sub">Aur yeh number badhta hi jayega... 🍀</p>
+      <button class="story-btn" id="togetherNextBtn">
+        <span>Aage Chalo</span>
+        <span class="story-btn-arrow">➔</span>
+      </button>
+    </div>
+  </div>
+  </div>
+
+<div class="page" id="finalPage" style="display:none;">
+  <div class="story-intro-wrap" id="finalWrap">
+    <div class="story-intro-card">
+      <div class="story-seal">🍀</div>
+      <h1 class="story-title" style="font-size:32px;">I Love You Divuu 🍀♾️</h1>
+      <div class="story-rule"><span></span>✦<span></span></div>
+      <p class="story-para">Ab tumhari baari hai, meri jaan...</p>
+      <textarea id="finalReplyBox" placeholder="Yahan likho..." style="width:100%; min-height:100px; border-radius:12px; padding:12px; font-family:'Cormorant Garamond',serif; font-size:16px; background:rgba(255,255,255,.05); border:1px solid rgba(212,175,55,.4); color:#f0e9f9; margin:16px 0;"></textarea>
+      <button class="story-btn" id="finalSubmitBtn">
+        <span>Submit</span>
+        <span class="story-btn-arrow">💫</span>
+      </button>
+    </div>
+  </div>
+<div class="celebration-overlay" id="celebrationOverlay" style="display:none;">
+  <div class="banner-wrap" id="bdayBanner"></div>
+  <div class="fireworks-box" id="finalFireworksBox"></div>
+  <div class="celebration-text" id="celebrationText"></div>
+<button class="story-btn" id="celebrationNextBtn" style="display:none; position:relative; z-index:3; margin-top:24px;">
+  <span>Ek Aur Surprise</span>
+  <span class="story-btn-arrow">🎁</span>
+</button>
+</div>
+</div>
+
+  <!-- ========================================== -->
+<!-- SPOTIFY PLAYLISTS SURPRISE PAGE -->
+<!-- ========================================== -->
+<div class="page" id="spotifyPage" style="display:none;">
+  <div class="story-intro-wrap">
+    <div class="story-intro-card" style="max-width:520px;">
+      <div class="story-seal">🎧</div>
+      <span class="story-eyebrow">Ek Aur Chhota Sa Surprise</span>
+      <h1 class="story-title" style="font-size:34px;">Hamare Gaane</h1>
+      <div class="story-rule"><span></span>✦<span></span></div>
+      <p class="story-sub" style="margin-bottom:20px;">Jo bhi mood ho, click ya scan karo 🍀</p>
+      <div id="spotifyCards"></div>
+    </div>
+  </div>
+</div>
   
     <!-- SCRIPT - सबसे नीचे -->
     <script src="script.js"></script>
