@@ -437,12 +437,14 @@ function renderStorySlide() {
     galleryCaption.textContent = item.caption;
     const photoNumber = storyItems.slice(0, storyIndex + 1).filter(i => i.type === 'photo').length;
     galleryCounter.textContent = `${photoNumber} / ${totalPhotos}`;
-  } else {
+} else {
     galleryPhotoSlide.style.display = 'none';
     galleryCelebrationSlide.style.display = 'flex';
     galleryCaption.textContent = '';
     galleryCounter.textContent = '✨';
   }
+
+  galleryFrame.classList.toggle('frame-auto', item.type === 'celebration');
 
   galleryBackBtn.disabled = storyIndex === 0;
   galleryNextBtn.textContent = storyIndex === storyItems.length - 1 ? 'Yehi Tak ✨' : 'Aage →';
@@ -1545,3 +1547,114 @@ document.getElementById('celebrationNextBtn').addEventListener('click', () => {
   document.getElementById('spotifyPage').style.display = 'flex';
 });
 
+// ==========================================
+// SPOTIFY PAGE - TWINKLING STARS
+// ==========================================
+function createWitchStars(){
+  const layer = document.getElementById('witchStars');
+  for(let i=0;i<40;i++){
+    const star = document.createElement('span');
+    star.style.left = Math.random()*100+'%';
+    star.style.top = Math.random()*70+'%';
+    star.style.animationDelay = (Math.random()*3)+'s';
+    star.style.animationDuration = (1.6+Math.random()*2)+'s';
+    layer.appendChild(star);
+  }
+}
+createWitchStars();
+
+// ==========================================
+// LITTLE GIFTS PAGE
+// ==========================================
+document.getElementById('giftsNextBtn').addEventListener('click', () => {
+  document.getElementById('spotifyPage').style.display = 'none';
+  document.getElementById('giftsPage').style.display = 'flex';
+});
+
+const loveCoupons = [
+  "1 Free Hug 🫂 — Anytime, Anywhere",
+  "1 Movie Night 🎬 — Tumhari Choice",
+  "1 Poora Din — Main Sab Sambhalunga",
+  "1 Surprise Date 🌙 — Jab Bhi Chaho",
+  "1 Lambi Call ☎️ — Bina Kisi Wajah Ke"
+];
+
+function renderCoupons() {
+  const wrap = document.getElementById('couponsWrap');
+  loveCoupons.forEach(text => {
+    const card = document.createElement('div');
+    card.className = 'coupon-card';
+    card.innerHTML = `<span class="coupon-icon">🎫</span><span>${text}</span>`;
+    wrap.appendChild(card);
+  });
+}
+renderCoupons();
+
+function initScratchCard() {
+  const canvas = document.getElementById('scratchCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#c9a86a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = '16px Cinzel';
+  ctx.fillStyle = '#7a5c2e';
+  ctx.textAlign = 'center';
+  ctx.fillText('✨ Scratch Here ✨', canvas.width/2, canvas.height/2);
+
+  let scratching = false;
+  function scratch(x, y) {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 18, 0, Math.PI*2);
+    ctx.fill();
+  }
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const point = e.touches ? e.touches[0] : e;
+    return { x: point.clientX - rect.left, y: point.clientY - rect.top };
+  }
+  canvas.addEventListener('mousedown', () => scratching = true);
+  canvas.addEventListener('touchstart', () => scratching = true);
+  window.addEventListener('mouseup', () => scratching = false);
+  canvas.addEventListener('touchend', () => scratching = false);
+  canvas.addEventListener('mousemove', (e) => { if (scratching) { const p = getPos(e); scratch(p.x, p.y); } });
+  canvas.addEventListener('touchmove', (e) => { e.preventDefault(); const p = getPos(e); scratch(p.x, p.y); });
+}
+initScratchCard();
+
+// ==========================================
+// FLOWER THEME PICKER
+// ==========================================
+const themeColors = {
+  red:    { accent:'#e05a6b', rgb:'224,90,107',  light:'#f5a3ad', bg1:'#2b0a12', bg2:'#5c1a2b', bg3:'#1a0509', glow:'224,90,107' },
+  pink:   { accent:'#e6a4c4', rgb:'230,164,196', light:'#f7d4e4', bg1:'#2b0f24', bg2:'#5c2a4a', bg3:'#1a0a17', glow:'230,164,196' },
+  purple: { accent:'#a78bfa', rgb:'167,139,250', light:'#d6c8fc', bg1:'#1a0a2e', bg2:'#3d1f5c', bg3:'#120a1f', glow:'167,139,250' },
+  green:  { accent:'#4caf6d', rgb:'76,175,109',  light:'#a8e6bd', bg1:'#0a2b16', bg2:'#1a5c34', bg3:'#051a0c', glow:'76,175,109' },
+  yellow: { accent:'#f0c14b', rgb:'240,193,75',  light:'#fbe8a6', bg1:'#2b2109', bg2:'#5c4a1a', bg3:'#1a1405', glow:'240,193,75' },
+  blue:   { accent:'#6fa8dc', rgb:'111,168,220', light:'#b8d9f5', bg1:'#0a1a2b', bg2:'#1a3a5c', bg3:'#05101a', glow:'111,168,220' },
+  gold:   { accent:'#d4af37', rgb:'212,175,55',  light:'#f3d98c', bg1:'#0f0c29', bg2:'#302b63', bg3:'#1a1730', glow:'123,104,238' }
+};
+
+function applyTheme(name) {
+  const t = themeColors[name];
+  if (!t) return;
+  const root = document.documentElement.style;
+  root.setProperty('--accent', t.accent);
+  root.setProperty('--accent-rgb', t.rgb);
+  root.setProperty('--accent-light', t.light);
+  root.setProperty('--bg1', t.bg1);
+  root.setProperty('--bg2', t.bg2);
+  root.setProperty('--bg3', t.bg3);
+  root.setProperty('--glow-rgb', t.glow);
+  localStorage.setItem('chosenFlowerTheme', name);
+
+  document.querySelectorAll('.flower-dot').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.theme === name);
+  });
+}
+
+document.querySelectorAll('.flower-dot').forEach(btn => {
+  btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
+});
+
+const savedTheme = localStorage.getItem('chosenFlowerTheme');
+if (savedTheme) applyTheme(savedTheme);

@@ -54,7 +54,15 @@
 <!-- Welcome Card -->
 
 <div class="welcome-card">
-
+<div class="flower-picker" id="flowerPicker">
+  <button class="flower-dot" data-theme="red" style="background:#e05a6b;">🌹</button>
+  <button class="flower-dot" data-theme="pink" style="background:#e6a4c4;">🌸</button>
+  <button class="flower-dot" data-theme="purple" style="background:#a78bfa;">💜</button>
+  <button class="flower-dot" data-theme="green" style="background:#4caf6d;">🍀</button>
+  <button class="flower-dot" data-theme="yellow" style="background:#f0c14b;">🌻</button>
+  <button class="flower-dot" data-theme="blue" style="background:#6fa8dc;">💙</button>
+  <button class="flower-dot active" data-theme="gold" style="background:#d4af37;">✨</button>
+</div>
 <p class="small-title">
 Welcome To
 </p>
@@ -598,6 +606,26 @@ Continue Our Fairytale ✨
 <!-- ========================================== -->
 <div class="page" id="spotifyPage" style="display:none;">
   <div class="story-intro-wrap">
+    <div class="witch-moon">🌙</div>
+<div class="witch-stars" id="witchStars"></div>
+<svg class="witch-castle" viewBox="0 0 400 130" preserveAspectRatio="xMidYMax slice">
+  <g fill="#150a24">
+    <rect x="0" y="90" width="400" height="40"/>
+    <rect x="30" y="60" width="40" height="70"/>
+    <polygon points="30,60 50,30 70,60"/>
+    <rect x="170" y="40" width="60" height="90"/>
+    <polygon points="170,40 200,5 230,40"/>
+    <rect x="330" y="65" width="40" height="65"/>
+    <polygon points="330,65 350,35 370,65"/>
+    <rect x="90" y="75" width="70" height="55"/>
+    <rect x="240" y="78" width="80" height="52"/>
+  </g>
+  <g fill="#f3d98c" opacity="0.6">
+    <rect x="45" y="80" width="10" height="14"/>
+    <rect x="195" y="60" width="10" height="14"/>
+    <rect x="345" y="85" width="10" height="14"/>
+  </g>
+</svg>
     <div class="story-intro-card" style="max-width:520px;">
       <div class="story-seal">🎧</div>
       <span class="story-eyebrow">Ek Aur Chhota Sa Surprise</span>
@@ -605,6 +633,42 @@ Continue Our Fairytale ✨
       <div class="story-rule"><span></span>✦<span></span></div>
       <p class="story-sub" style="margin-bottom:20px;">Jo bhi mood ho, click ya scan karo 🍀</p>
       <div id="spotifyCards"></div>
+      <button class="story-btn" id="giftsNextBtn" style="margin-top:10px;">
+  <span>Ek Aur Chhota Tohfa</span>
+  <span class="story-btn-arrow">🎁</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ========================================== -->
+<!-- LITTLE GIFTS PAGE -->
+<!-- ========================================== -->
+<div class="page" id="giftsPage" style="display:none;">
+  <div class="story-intro-wrap">
+    <div class="story-intro-card" style="max-width:520px;">
+      <div class="story-seal">🎁</div>
+      <span class="story-eyebrow">Kuch Aur Chhote Tohfe</span>
+      <h1 class="story-title" style="font-size:32px;">Tumhare Liye</h1>
+      <div class="story-rule"><span></span>✦<span></span></div>
+
+      <div class="coupons-wrap" id="couponsWrap"></div>
+
+      <div class="scratch-wrap">
+        <div class="scratch-reveal">Tumhare bina meri zindagi adhoori hai 🍀</div>
+        <canvas id="scratchCanvas" width="280" height="140"></canvas>
+      </div>
+      <p class="scratch-hint">Ungli se scratch karo ✨</p>
+
+      <div class="certificate-card">
+        <div class="cert-border">
+          <div class="cert-seal">🍀</div>
+          <div class="cert-title">Certificate of Forever</div>
+          <div class="cert-body">Yeh certify karta hai ki<br><strong>Divyanjali Yadav </strong><br>officially, hamesha ke liye,<br>meri Forever Love hai 💍</div>
+          <div class="cert-sign">— Tumhara Hamesha</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
