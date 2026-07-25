@@ -2266,3 +2266,11 @@ box-shadow:
 .cert-body{ font-family:'Cormorant Garamond',serif; font-size:16px; color:#f0e9f9; line-height:1.6; }
 .cert-body strong{ font-family:'Great Vibes',cursive; font-size:26px; color:#f3c9dd; }
 .cert-sign{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:13px; color:#b9a7d9; margin-top:14px; }
+
+.gallery-frame.frame-auto{
+  aspect-ratio: unset;
+  height: auto;
+  min-height: 280px;
+  overflow: visible;
+}
+
