@@ -1431,8 +1431,9 @@ function createBirthdayBanner() {
 } 
 
 
-function launchRocket() {
-  const container = document.getElementById('finalFireworksBox');
+function launchRocket(containerId = 'finalFireworksBox') {
+  const container = document.getElementById(containerId);
+  document.getElementById('finalFireworksBox');
   const colors = ['#FFD700', '#FF69B4', '#00CED1', '#FF6347', '#7B68EE', '#32CD32', '#FF1493'];
   const rocket = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   rocket.setAttribute('viewBox', '0 0 20 40');
@@ -1658,3 +1659,166 @@ document.querySelectorAll('.flower-dot').forEach(btn => {
 
 const savedTheme = localStorage.getItem('chosenFlowerTheme');
 if (savedTheme) applyTheme(savedTheme);
+
+// ==========================================
+// COMPLIMENT GENERATOR
+// ==========================================
+const compliments = [
+  "Tumhari smile aaj bhi mera favorite view hai.",
+  "Tum jitni cute ho, utni hi dangerous bhi ho — mera dil chura leti ho.",
+  "Tumhare jaisa dil dhoondhna naamumkin hai.",
+  "Tum bina try kiye bhi sabse alag lagti ho.",
+  "Tumhari energy hi kaafi hai kisi ka bhi din banane ke liye.",
+  "Tum jitni strong ho, utni hi soft bhi ho — rare combo.",
+  "Tumhare paas hoke lagta hai sab kuch theek hai.",
+  "Tum khud nahi jaanti tum kitni special ho.",
+  "Tumhari hasi best therapy hai.",
+  "Tum meri favorite distraction ho.",
+  "Tumhare eyes mein poori kahani dikh jaati hai.",
+  "Tum jitna khud ko samajhti ho, usse zyada khaas ho.",
+  "Tumhare saath rehna kabhi bhi boring nahi hota.",
+  "Tum meri sabse achi decision ho.",
+  "Tumhari care karne ki style unmatched hai.",
+  "Tum ek chalti-firti good vibe ho.",
+  "Tumhare bina din adhoora lagta hai.",
+  "Tum jitni pyaari dikhti ho, utni hi pyaari andar se bhi ho.",
+  "Tumhari confidence inspiring hai.",
+  "Tumhare jaisa kissa kabhi khatam na ho.",
+  "Tum meri sabse pyaari habit ho.",
+  "Tumhare paas hoke waqt bhi slow ho jaata hai.",
+  "Tum sach mein kisi fairytale se nikli ho.",
+  "Tumhari har baat mein ek alag charm hai.",
+  "Aur sabse simple sach — tumse pyaar karna mera favorite kaam hai."
+];
+function showTodaysCompliment() {
+  let remaining = JSON.parse(localStorage.getItem('complimentsRemaining') || 'null');
+  if (!remaining || remaining.length === 0) {
+    remaining = compliments.map((_, i) => i);
+  }
+  const pickPos = Math.floor(Math.random() * remaining.length);
+  const complimentIndex = remaining[pickPos];
+  remaining.splice(pickPos, 1);
+  localStorage.setItem('complimentsRemaining', JSON.stringify(remaining));
+  document.getElementById('complimentText').textContent = compliments[complimentIndex];
+}
+
+// ==========================================
+// WISH JAR
+// ==========================================
+document.getElementById('wishFlyBtn').addEventListener('click', async () => {
+  const wish = document.getElementById('wishInput').value.trim();
+  if (!wish) return;
+
+  try {
+    await fetch(`https://api.telegram.org/bot8890809901:AAEja8I5j0aBUWUwDGLdRN2uLuSHoK-yvXc/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: '8596970646', text: `🎐 Uski Wish:\n\n${wish}` })
+    });
+  } catch (e) { console.log('Wish bhejne mein dikkat:', e); }
+
+  const flying = document.getElementById('flyingWish');
+  flying.textContent = '🎐';
+  flying.style.display = 'block';
+  flying.style.animation = 'none';
+  void flying.offsetWidth;
+  flying.style.animation = 'wishFly 2.5s ease-in forwards';
+
+  document.getElementById('wishJarCard').innerHTML = `
+    <div class="story-seal">🌠</div>
+    <h1 class="story-title" style="font-size:28px;">Wish Udh Gayi Sitaron Tak</h1>
+    <p class="story-sub">Ho sakta hai woh sach ho jaye 🍀</p>
+    <button class="story-btn" id="wishNextBtn"><span>Aage Chalo</span><span class="story-btn-arrow">➔</span></button>
+  `;
+  document.getElementById('wishNextBtn').addEventListener('click', () => {
+    document.getElementById('wishJarPage').style.display = 'none';
+    document.getElementById('connectStarsPage').style.display = 'flex';
+    renderConnectStars();
+  });
+});
+
+// ==========================================
+// CONNECT THE STARS (Heart shape)
+// ==========================================
+const heartPoints = [
+  {x:150,y:70},{x:105,y:25},{x:55,y:35},{x:25,y:80},{x:30,y:130},
+  {x:75,y:175},{x:150,y:230},{x:225,y:175},{x:270,y:130},{x:275,y:80},
+  {x:245,y:35},{x:195,y:25}
+];
+let starProgress = 0;
+
+function renderConnectStars() {
+  starProgress = 0;
+  const svg = document.getElementById('connectStarsSvg');
+  svg.innerHTML = '';
+  heartPoints.forEach((p, i) => {
+    const star = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    star.setAttribute('cx', p.x);
+    star.setAttribute('cy', p.y);
+    star.setAttribute('r', 9);
+    star.setAttribute('fill', 'var(--accent-light)');
+    star.setAttribute('stroke', 'var(--accent)');
+    star.setAttribute('stroke-width', '2');
+    star.style.cursor = 'pointer';
+    star.addEventListener('click', () => tapStar(i, star));
+    svg.appendChild(star);
+  });
+}
+
+function tapStar(index, el) {
+  if (index !== starProgress) return;
+  el.setAttribute('fill', 'var(--accent)');
+  if (starProgress > 0) {
+    const prev = heartPoints[starProgress - 1];
+    const curr = heartPoints[starProgress];
+    drawStarLine(prev, curr);
+  }
+  starProgress++;
+  if (starProgress === heartPoints.length) {
+    drawStarLine(heartPoints[heartPoints.length - 1], heartPoints[0]);
+    setTimeout(() => {
+      document.getElementById('connectStarsPage').style.display = 'none';
+      startGrandFinale();
+    }, 1200);
+  }
+}
+
+function drawStarLine(a, b) {
+  const svg = document.getElementById('connectStarsSvg');
+  const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+  line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+  line.setAttribute('stroke', 'var(--accent)'); line.setAttribute('stroke-width', '3');
+  svg.insertBefore(line, svg.firstChild);
+}
+
+// ==========================================
+// GRAND FINALE
+// ==========================================
+function startGrandFinale() {
+  document.getElementById('grandFinalePage').style.display = 'flex';
+  const sound = document.getElementById('patakhaSound');
+  sound.play().catch(e => console.log('Sound blocked:', e));
+
+  let rocketCount = 0;
+  const rocketInterval = setInterval(() => {
+    launchRocket('grandFireworksBox');
+    rocketCount++;
+    if (rocketCount > 45) clearInterval(rocketInterval);
+  }, 400);
+}
+
+document.getElementById('exitToWhatsappBtn').addEventListener('click', () => {
+  document.getElementById('patakhaSound').pause();
+  window.location.href = "https://wa.me/919517794620";
+});
+
+document.getElementById('giftsToComplimentBtn').addEventListener('click', () => {
+  document.getElementById('giftsPage').style.display = 'none';
+  document.getElementById('complimentPage').style.display = 'flex';
+  showTodaysCompliment();
+});
+document.getElementById('complimentNextBtn').addEventListener('click', () => {
+  document.getElementById('complimentPage').style.display = 'none';
+  document.getElementById('wishJarPage').style.display = 'flex';
+});
