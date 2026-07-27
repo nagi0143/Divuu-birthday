@@ -478,9 +478,14 @@ Continue Our Fairytale ✨
   <div class="story-rule"><span></span>✦<span></span></div>
   <p class="list-item-text" id="listItemText"></p>
   <div class="gallery-nav" style="margin-top:24px;">
+   
     <button class="gallery-btn ghost" id="listBackBtn">← Peeche</button>
     <button class="gallery-btn" id="listNextBtn">Aage →</button>
   </div>
+      <p class="list-skip-msg" id="listSkipMsg" style="display:none;"></p>
+<button class="story-btn" id="listSkipBtn" style="display:none; margin-top:14px;">
+  <span>Skip Karo</span><span class="story-btn-arrow">⏭</span>
+</button>
     </div>
   </div>
 </div>
@@ -737,6 +742,42 @@ Continue Our Fairytale ✨
   <audio id="patakhaSound" src="patakhe.mp3" loop></audio>
   </div>
 
+
+<!-- ========================================== -->
+<!-- SPIN THE WHEEL -->
+<!-- ========================================== -->
+<div class="page" id="wheelPage" style="display:none;">
+  <div class="story-intro-wrap">
+    <div class="story-intro-card" style="max-width:420px;">
+      <div class="story-seal">🎡</div>
+      <span class="story-eyebrow">Ek Aakhri Khel</span>
+      <h1 class="story-title" style="font-size:30px;">Spin The Wheel</h1>
+      <div class="story-rule"><span></span>✦<span></span></div>
+
+      <div class="wheel-wrap">
+        <div class="wheel-pointer">▼</div>
+        <div class="wheel-disc" id="wheelDisc"></div>
+        <button class="wheel-spin-btn" id="wheelSpinBtn">SPIN<br>💋</button>
+      </div>
+      <audio id="tickSound" src="tick.mp3" loop></audio>
+    </div>
+  </div>
+
+  <div class="wheel-result-overlay" id="wheelResultOverlay" style="display:none;">
+    <div class="wheel-confetti" id="wheelConfetti"></div>
+    <div class="wheel-result-card">
+      <div class="story-seal">🎉</div>
+      <h2 class="wheel-result-title">Congratulations Baby 💋</h2>
+      <p class="wheel-result-sub">YOU WON</p>
+      <div class="wheel-result-prize" id="wheelResultPrize"></div>
+      <p class="wheel-result-msg" id="wheelResultMsg"></p>
+      <div class="wheel-result-btns">
+        <button class="story-btn" id="wheelRedeemBtn"><span>Redeem</span><span class="story-btn-arrow">💋</span></button>
+        <button class="gallery-btn ghost" id="wheelSpinAgainBtn"><span>Spin Again 🎡</span></button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
     <!-- SCRIPT - सबसे नीचे -->

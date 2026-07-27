@@ -2305,4 +2305,64 @@ box-shadow:
 .cake-corner.bl{ bottom:14px; left:14px; transform:scaleY(-1); }
 .cake-corner.br{ bottom:14px; right:14px; transform:scale(-1,-1); }
 
+.list-skip-msg{
+  font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14px;
+  color:var(--accent-light); line-height:1.6; margin-top:16px; padding:0 6px;
+}
+
+/* ============================================== */
+/* SPIN THE WHEEL */
+/* ============================================== */
+.wheel-wrap{ position:relative; width:260px; height:260px; margin:24px auto 10px; }
+.wheel-pointer{
+  position:absolute; top:-16px; left:50%; transform:translateX(-50%);
+  font-size:28px; color:var(--accent); z-index:3;
+  filter: drop-shadow(0 0 6px rgba(var(--accent-rgb),.8));
+}
+.wheel-disc{
+  width:260px; height:260px; border-radius:50%; position:relative;
+  border:6px solid var(--accent);
+  box-shadow: 0 0 30px rgba(var(--accent-rgb),.5), inset 0 0 20px rgba(0,0,0,.4), 0 12px 24px rgba(0,0,0,.5);
+  transition: transform 5.5s cubic-bezier(.17,.67,.16,.99);
+  background: conic-gradient(
+    #ff6b81 0deg 45deg, #ffa502 45deg 90deg, #7bed9f 90deg 135deg, #70a1ff 135deg 180deg,
+    #eccc68 180deg 225deg, #a29bfe 225deg 270deg, #cd853f 270deg 315deg, #ffd700 315deg 360deg
+  );
+}
+.wheel-slice-label{
+  position:absolute; font-size:22px;
+  transform: translate(-50%,-50%);
+  pointer-events:none;
+}
+.wheel-spin-btn{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:68px; height:68px; border-radius:50%; z-index:4; cursor:pointer;
+  background: radial-gradient(circle, var(--accent-light), var(--accent));
+  border:3px solid #fff; color:#1a0f2e; font-family:'Cinzel',serif; font-size:11px; font-weight:700; line-height:1.2;
+  box-shadow:0 0 20px rgba(var(--accent-rgb),.8), 0 4px 10px rgba(0,0,0,.4);
+}
+.wheel-spin-btn:active{ transform:translate(-50%,-50%) scale(.94); }
+
+.wheel-result-overlay{
+  position:fixed; inset:0; z-index:10000;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(10,5,20,.85); backdrop-filter:blur(4px); overflow:hidden;
+}
+.wheel-result-card{
+  position:relative; z-index:2; max-width:340px; width:88%;
+  background:linear-gradient(180deg, rgba(48,43,99,.6), rgba(15,12,41,.85));
+  border:1px solid rgba(var(--accent-rgb),.5); border-radius:16px;
+  padding:30px 24px; text-align:center;
+  box-shadow:0 0 50px rgba(var(--accent-rgb),.4);
+}
+.wheel-result-title{ font-family:'Great Vibes',cursive; font-size:30px; color:#fdf6ec; margin-bottom:4px; }
+.wheel-result-sub{ font-family:'Cinzel',serif; font-size:11px; letter-spacing:3px; color:var(--accent-light); }
+.wheel-result-prize{ font-family:'Cinzel',serif; font-size:19px; color:var(--accent); margin:10px 0; }
+.wheel-result-msg{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:#e6def0; margin-bottom:18px; }
+.wheel-result-btns{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+.confetti-piece{ position:absolute; top:-10px; width:8px; height:14px; animation: confettiFall linear forwards; }
+@keyframes confettiFall{ from{ top:-10px; transform:rotate(0deg); opacity:1; } to{ top:110%; transform:rotate(500deg); opacity:.8; } }
+.wheel-floating-heart{ position:absolute; bottom:-20px; font-size:20px; animation: heartFloatUp linear forwards; }
+@keyframes heartFloatUp{ from{ bottom:-20px; opacity:1; } to{ bottom:110%; opacity:0; } }
 

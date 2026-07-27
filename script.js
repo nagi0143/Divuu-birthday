@@ -1102,6 +1102,18 @@ function renderListItem() {
   listItemTextEl.textContent = cat.items[listItemIndex];
   listProgressBar.style.width = `${((listItemIndex + 1) / cat.items.length) * 100}%`;
   listBackBtn.disabled = (listCategoryIndex === 0 && listItemIndex === 0);
+  const skipBtn = document.getElementById('listSkipBtn');
+  const skipMsg = document.getElementById('listSkipMsg');
+  if (listCategoryIndex >= 2) {
+    skipBtn.style.display = 'inline-flex';
+    skipMsg.style.display = listCategoryIndex === 2 ? 'block' : 'none';
+    if (listCategoryIndex === 2) {
+      skipMsg.textContent = "Baby I know you're feeling bored somehow 💋💋 pressure mat lo bubu, agar chaho to baad mein padh lena, abhi skip kar do aage dekh lo. Abhi mera acha bacha ho na aap, to skip kardo abhi ke liye, baad mein aaram se padh lena mera pyara bachaa 😋🥰💋💋💋";
+    }
+  } else {
+    skipBtn.style.display = 'none';
+    skipMsg.style.display = 'none';
+  }
 }
 
 function listNext() {
@@ -1778,7 +1790,7 @@ function tapStar(index, el) {
     drawStarLine(heartPoints[heartPoints.length - 1], heartPoints[0]);
     setTimeout(() => {
       document.getElementById('connectStarsPage').style.display = 'none';
-      startGrandFinale();
+      document.getElementById('wheelPage').style.display = 'flex';
     }, 1200);
   }
 }
@@ -1822,3 +1834,128 @@ document.getElementById('complimentNextBtn').addEventListener('click', () => {
   document.getElementById('complimentPage').style.display = 'none';
   document.getElementById('wishJarPage').style.display = 'flex';
 });
+
+document.getElementById('listSkipBtn').addEventListener('click', () => {
+  if (listCategoryIndex < loveLists.length - 1) {
+    listCategoryIndex++;
+    listItemIndex = 0;
+    renderListItem();
+  } else {
+    listPage.style.display = 'none';
+    document.getElementById('galleryIntroPage').style.display = 'flex';
+  }
+});
+// ==========================================
+// SPIN THE WHEEL
+// ==========================================
+const wheelPrizes = [
+  { emoji:'💋', label:'Unlimited Kisses',  msg:"Jitni chaho utni maango, main kabhi mana nahi karunga 💋" },
+  { emoji:'🤗', label:'1 Giant Hug',       msg:"Jab bhi chaho, bas bolna — main turant gale laga lunga 🤗" },
+  { emoji:'🍦', label:'Ice Cream Date',    msg:"Chalo kisi din sirf ice cream aur baatein 🍦" },
+  { emoji:'🎬', label:'Movie Night',       msg:"Tumhari choice, meri godi, aur ek achi si movie 🎬" },
+  { emoji:'🌹', label:'Surprise Gift',     msg:"Ek chhota sa surprise tumhare liye taiyar hai 🌹" },
+  { emoji:'📞', label:'Midnight Call',     msg:"Raat ko jab bhi neend na aaye, bas call kar dena 📞" },
+  { emoji:'🍫', label:'Chocolate Treat',   msg:"Meetha khaane ka bahana mil gaya 🍫" },
+  { emoji:'👑', label:'Queen For A Day',   msg:"Aaj tumhari har wish maani jayegi. 💋" }
+];
+
+function renderWheelLabels() {
+  const disc = document.getElementById('wheelDisc');
+  const radius = 85;
+  wheelPrizes.forEach((p, i) => {
+    const angleDeg = i * 45 + 22.5;
+    const theta = (angleDeg * Math.PI) / 180;
+    const x = radius * Math.sin(theta);
+    const y = -radius * Math.cos(theta);
+    const label = document.createElement('div');
+    label.className = 'wheel-slice-label';
+    label.style.left = `calc(50% + ${x}px)`;
+    label.style.top = `calc(50% + ${y}px)`;
+    label.textContent = p.emoji;
+    disc.appendChild(label);
+  });
+}
+renderWheelLabels();
+
+let wheelSpinning = false;
+let wheelCurrentRotation = 0;
+
+document.getElementById('wheelSpinBtn').addEventListener('click', () => {
+  if (wheelSpinning) return;
+  wheelSpinning = true;
+
+  const tick = document.getElementById('tickSound');
+  tick.currentTime = 0;
+  tick.play().catch(e => console.log('Tick blocked:', e));
+
+  const winIndex = Math.floor(Math.random() * wheelPrizes.length);
+  const sliceCenter = winIndex * 45 + 22.5;
+  const extraSpins = 6 + Math.floor(Math.random() * 3);
+  const targetRotation = wheelCurrentRotation + (extraSpins * 360) + (360 - sliceCenter);
+
+  const disc = document.getElementById('wheelDisc');
+  disc.style.transform = `rotate(${targetRotation}deg)`;
+  wheelCurrentRotation = targetRotation;
+
+  setTimeout(() => {
+    tick.pause();
+    wheelSpinning = false;
+    showWheelResult(winIndex);
+  }, 5600);
+});
+
+function showWheelResult(index) {
+  const prize = wheelPrizes[index];
+  document.getElementById('wheelResultPrize').textContent = `${prize.emoji} ${prize.label}`;
+  document.getElementById('wheelResultMsg').textContent = prize.msg;
+  document.getElementById('wheelResultOverlay').style.display = 'flex';
+
+  launchWheelConfetti();
+  launchFloatingHearts();
+
+  fetch(`https://api.telegram.org/bot8890809901:AAEja8I5j0aBUWUwDGLdRN2uLuSHoK-yvXc/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: '8596970646', text: `🎡 Wheel Result: ${prize.emoji} ${prize.label}` })
+  }).catch(e => console.log('Wheel result send failed:', e));
+}
+
+function launchWheelConfetti() {
+  const container = document.getElementById('wheelConfetti');
+  const colors = ['#ff6b81','#ffa502','#7bed9f','#70a1ff','#eccc68','#a29bfe','#ffd700'];
+  for (let i = 0; i < 40; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random()*100+'%';
+    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+    piece.style.animationDuration = (2+Math.random()*2)+'s';
+    piece.style.animationDelay = (Math.random()*0.5)+'s';
+    container.appendChild(piece);
+    setTimeout(()=>piece.remove(), 4500);
+  }
+}
+
+function launchFloatingHearts() {
+  const container = document.getElementById('wheelConfetti');
+  for (let i=0;i<12;i++){
+    const heart = document.createElement('div');
+    heart.className = 'wheel-floating-heart';
+    heart.textContent = '💋';
+    heart.style.left = Math.random()*100+'%';
+    heart.style.animationDuration = (3+Math.random()*2)+'s';
+    heart.style.animationDelay = (Math.random()*1)+'s';
+    container.appendChild(heart);
+    setTimeout(()=>heart.remove(), 5500);
+  }
+}
+
+document.getElementById('wheelSpinAgainBtn').addEventListener('click', () => {
+  document.getElementById('wheelResultOverlay').style.display = 'none';
+  document.getElementById('wheelConfetti').innerHTML = '';
+});
+
+document.getElementById('wheelRedeemBtn').addEventListener('click', () => {
+  document.getElementById('wheelPage').style.display = 'none';
+  startGrandFinale();
+});
+
